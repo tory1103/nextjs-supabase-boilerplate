@@ -11,8 +11,8 @@ import {
 	SignWithPhone
 }                                 from '@/actions/auth/types';
 import { createSupabaseSVClient } from '@/lib/supabase/server';
+import { isValidPassword }        from '@/lib/utils';
 import { ServerActionReturn }     from '@/types/server-action-return';
-import { isValidPassword }        from '@/utils';
 
 
 export async function signinWithEmailAction( { email, password }: SignWithEmail ): Promise<ServerActionReturn<void, {}>>
