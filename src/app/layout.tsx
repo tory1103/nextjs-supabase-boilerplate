@@ -4,6 +4,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { ReactNode }     from 'react';
 
+import { Toaster }                from '@/components/ui/toaster';
 import { AuthContextProvider }    from '@/hooks/use-auth';
 import { createSupabaseSVClient } from '@/lib/supabase/server';
 
@@ -27,6 +28,7 @@ export default async function RootLayout
 		<html lang="en">
 		<body>
 		<AuthContextProvider user={ user }>
+			<Toaster/>
 			{ children }
 		</AuthContextProvider>
 		</body>
