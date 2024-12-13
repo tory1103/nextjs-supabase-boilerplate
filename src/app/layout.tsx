@@ -1,7 +1,11 @@
+import 'server-only';
+import './globals.css';
+
 import type { Metadata } from 'next';
 import { ReactNode }     from 'react';
 
-import './globals.css';
+import { AuthContextProvider }    from '@/hooks/use-auth';
+import { createSupabaseSVClient } from '@/lib/supabase/server';
 
 
 export const metadata: Metadata = {
@@ -9,16 +13,22 @@ export const metadata: Metadata = {
 	description: 'A template for building a Next.js app with Supabase.'
 };
 
-export default function RootLayout
+export default async function RootLayout
 (
 	{ children }:
 		Readonly<{ children: ReactNode }>
 )
 {
+	const
+		{ auth }           = await createSupabaseSVClient(),
+		{ data: { user } } = await auth.getUser();
+
 	return (
 		<html lang="en">
 		<body>
-		{ children }
+		<AuthContextProvider user={ user }>
+			{ children }
+		</AuthContextProvider>
 		</body>
 		</html>
 	);
