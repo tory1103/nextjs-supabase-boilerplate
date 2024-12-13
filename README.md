@@ -1,0 +1,1 @@
+# Supabase + Next.js + Tailwind CSS Template
