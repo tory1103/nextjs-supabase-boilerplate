@@ -1,33 +1,27 @@
 'use server';
 
-
-import {
-	isEmail,
-	isMobilePhone
-}                                 from 'validator';
+import { ZodIssue }               from 'zod';
 
 import {
 	SignWithEmail,
 	SignWithPhone
 }                                 from '@/actions/auth/types';
 import { createSupabaseSVClient } from '@/lib/supabase/server';
-import { isValidPassword }        from '@/lib/utils';
 import { ServerActionReturn }     from '@/types/server-action-return';
+import {
+	SigninWithEmailSchema,
+	SigninWithPhoneSchema
+}                                 from '@/zod-schemas/auth/signin';
 
 
-export async function signinWithEmailAction( { email, password }: SignWithEmail ): Promise<ServerActionReturn<void, {}>>
+export async function signinWithEmailAction( { email, password }: SignWithEmail ):
+	Promise<ServerActionReturn<void, { zodValidation?: ZodIssue[] }>>
 {
-	if ( !isEmail( email ) ) return {
-		success: false,
-		error  : { code: 'AUTH-SGIN-001', message: 'Invalid email' }
-	};
+	const schemaValidation = await SigninWithEmailSchema.safeParseAsync( { email, password } );
 
-	if ( !isValidPassword( password ) ) return {
+	if ( !schemaValidation.success ) return {
 		success: false,
-		error  : {
-			code   : 'AUTH-SGIN-002',
-			message: 'Must be at least 8 characters long and contain at least 1 number, 1 uppercase letter, 1 lowercase letter, and 1 symbol'
-		}
+		error  : { code: 'AUTH-SGIN-001', message: 'Invalid email or password', zodValidation: schemaValidation.error?.issues }
 	};
 
 	const
@@ -45,19 +39,14 @@ export async function signinWithEmailAction( { email, password }: SignWithEmail 
 	};
 }
 
-export async function signinWithPhoneAction( { phone, password }: SignWithPhone ): Promise<ServerActionReturn<void, {}>>
+export async function signinWithPhoneAction( { phone, password }: SignWithPhone ):
+	Promise<ServerActionReturn<void, { zodValidation?: ZodIssue[] }>>
 {
-	if ( !isMobilePhone( phone ) ) return {
-		success: false,
-		error  : { code: 'AUTH-SGIN-004', message: 'Invalid phone number' }
-	};
+	const schemaValidation = await SigninWithPhoneSchema.safeParseAsync( { phone, password } );
 
-	if ( !isValidPassword( password ) ) return {
+	if ( !schemaValidation.success ) return {
 		success: false,
-		error  : {
-			code   : 'AUTH-SGIN-005',
-			message: 'Must be at least 8 characters long and contain at least 1 number, 1 uppercase letter, 1 lowercase letter, and 1 symbol'
-		}
+		error  : { code: 'AUTH-SGIN-005', message: 'Invalid phone or password', zodValidation: schemaValidation.error?.issues }
 	};
 
 	const
@@ -75,7 +64,8 @@ export async function signinWithPhoneAction( { phone, password }: SignWithPhone 
 	};
 }
 
-export async function signinAnonymouslyAction(): Promise<ServerActionReturn<void, {}>>
+export async function signinAnonymouslyAction():
+	Promise<ServerActionReturn<void, {}>>
 {
 	const
 		{ auth }  = await createSupabaseSVClient(),

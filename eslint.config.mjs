@@ -16,9 +16,9 @@ const compat = new FlatCompat( {
 const eslintConfig = [
 	...compat.extends( 'next/core-web-vitals' ), {
 		rules: {
-			semi                  : [ 2, 'always' ],
-			quotes                : [ 2, 'single' ],
-			'sort-imports'        : [
+			semi                            : [ 2, 'always' ],
+			quotes                          : [ 2, 'single' ],
+			'sort-imports'                  : [
 				'error', {
 					ignoreCase           : false,
 					ignoreDeclarationSort: true,
@@ -27,8 +27,8 @@ const eslintConfig = [
 					allowSeparatedGroups : true
 				}
 			],
-			'import/no-unresolved': 'error',
-			'import/order'        : [
+			'import/no-unresolved'          : 'error',
+			'import/order'                  : [
 				'error', {
 					groups            : [
 						'builtin',
@@ -44,6 +44,10 @@ const eslintConfig = [
 						caseInsensitive: true
 					}
 				}
+			],
+			'react/jsx-curly-brace-presence': [
+				'error',
+				{ props: 'always', children: 'ignore' }
 			]
 		}
 	}

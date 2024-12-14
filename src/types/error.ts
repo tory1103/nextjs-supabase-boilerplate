@@ -1,7 +1,5 @@
-export type TError<T extends Record<string, string>> =
-	{
-		[key in keyof T]: T[key];
-	} & {
-		code: string | number;
-		message: string;
-	};
+export type TError<T> =
+	T & {
+	code: string | number;
+	message: string;
+};

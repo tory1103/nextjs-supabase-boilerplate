@@ -25,7 +25,7 @@ export default async function RootLayout
 		{ data: { user } } = await auth.getUser();
 
 	return (
-		<html lang="en">
+		<html lang={ 'en' }>
 		<body>
 		<AuthContextProvider user={ user }>
 			<Toaster/>

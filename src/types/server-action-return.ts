@@ -1,7 +1,7 @@
 import { TError } from '@/types/error';
 
 
-export type ServerActionReturn<T, K extends Record<string, string>> =
+export type ServerActionReturn<T, K> =
 	{
 		success: true;
 		data: T
