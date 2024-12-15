@@ -13,7 +13,13 @@ export async function createSupabaseSVClient()
 		process.env.NEXT_PUBLIC_SUPABASE_URL!,
 		process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 		{
-			cookies: {
+			cookieOptions: {
+				path    : '/',
+				sameSite: 'lax',
+				httpOnly: true,
+				expires : new Date( Date.now() + 60 * 60 * 1000 ) // 1 hour
+			},
+			cookies      : {
 				getAll,
 				setAll( cookiesToSet )
 				{
