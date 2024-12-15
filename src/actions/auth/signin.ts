@@ -3,8 +3,8 @@
 import { ZodIssue }               from 'zod';
 
 import {
-	SignWithEmail,
-	SignWithPhone
+	SigninWithEmail,
+	SigninWithPhone
 }                                 from '@/actions/auth/types';
 import { createSupabaseSVClient } from '@/lib/supabase/server';
 import { ServerActionReturn }     from '@/types/server-action-return';
@@ -14,7 +14,7 @@ import {
 }                                 from '@/zod-schemas/auth/signin';
 
 
-export async function signinWithEmailAction( { email, password }: SignWithEmail ):
+export async function signinWithEmailAction( { email, password }: SigninWithEmail ):
 	Promise<ServerActionReturn<void, { zodValidation?: ZodIssue[] }>>
 {
 	const schemaValidation = await SigninWithEmailSchema.safeParseAsync( { email, password } );
@@ -39,7 +39,7 @@ export async function signinWithEmailAction( { email, password }: SignWithEmail 
 	};
 }
 
-export async function signinWithPhoneAction( { phone, password }: SignWithPhone ):
+export async function signinWithPhoneAction( { phone, password }: SigninWithPhone ):
 	Promise<ServerActionReturn<void, { zodValidation?: ZodIssue[] }>>
 {
 	const schemaValidation = await SigninWithPhoneSchema.safeParseAsync( { phone, password } );

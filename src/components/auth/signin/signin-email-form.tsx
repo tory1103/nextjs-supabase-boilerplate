@@ -4,9 +4,9 @@ import { zodResolver }           from '@hookform/resolvers/zod';
 import { redirect }              from 'next/navigation';
 import { useState }              from 'react';
 import { useForm }               from 'react-hook-form';
-import { z }                     from 'zod';
 
 import { signinWithEmailAction } from '@/actions/auth/signin';
+import { SigninWithEmail }       from '@/actions/auth/types';
 import { Button }                from '@/components/ui/button';
 import {
 	Form,
@@ -22,7 +22,6 @@ import { SigninWithEmailSchema } from '@/zod-schemas/auth/signin';
 
 
 type SigninFormProps = {};
-type SigninWithEmailSchemaType = z.infer<typeof SigninWithEmailSchema>;
 
 export default function SigninEmailForm( props: SigninFormProps )
 {
@@ -30,7 +29,7 @@ export default function SigninEmailForm( props: SigninFormProps )
 
 	const
 		{ toast }                          = useToast(),
-		{ control, handleSubmit, ...form } = useForm<SigninWithEmailSchemaType>
+		{ control, handleSubmit, ...form } = useForm<SigninWithEmail>
 		(
 			{
 				resolver     : zodResolver( SigninWithEmailSchema ),
@@ -43,7 +42,7 @@ export default function SigninEmailForm( props: SigninFormProps )
 
 	const [ isLoading, setIsLoading ] = useState<boolean>( false );
 
-	async function onSubmit( { email, password }: SigninWithEmailSchemaType )
+	async function onSubmit( { email, password }: SigninWithEmail )
 	{
 		setIsLoading( true );
 		const action = await signinWithEmailAction( { email, password } );
