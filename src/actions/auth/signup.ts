@@ -1,32 +1,27 @@
 'use server';
 
-import {
-	isEmail,
-	isMobilePhone
-}                                 from 'validator';
+import { ZodIssue }               from 'zod';
 
 import {
-	SignWithEmail,
-	SignWithPhone
+	SignupWithEmail,
+	SignupWithPhone
 }                                 from '@/actions/auth/types';
 import { createSupabaseSVClient } from '@/lib/supabase/server';
-import { isValidPassword }        from '@/lib/utils';
 import { ServerActionReturn }     from '@/types/server-action-return';
+import {
+	SignupWithEmailSchema,
+	SignupWithPhoneSchema
+}                                 from '@/zod-schemas/auth/signup';
 
 
-export async function signupWithEmailAction( { email, password }: SignWithEmail ): Promise<ServerActionReturn<void, {}>>
+export async function signupWithEmailAction( { email, password, validationPassword }: SignupWithEmail ):
+	Promise<ServerActionReturn<void, { zodValidation?: ZodIssue[] }>>
 {
-	if ( !isEmail( email ) ) return {
-		success: false,
-		error  : { code: 'AUTH-SGUP-001', message: 'Invalid email' }
-	};
+	const schemaValidation = await SignupWithEmailSchema.safeParseAsync( { email, password, validationPassword } );
 
-	if ( !isValidPassword( password ) ) return {
+	if ( !schemaValidation.success ) return {
 		success: false,
-		error  : {
-			code   : 'AUTH-SGUP-002',
-			message: 'Must be at least 8 characters long and contain at least 1 number, 1 uppercase letter, 1 lowercase letter, and 1 symbol'
-		}
+		error  : { code: 'AUTH-SGUP-001', message: 'Invalid email or password', zodValidation: schemaValidation.error?.issues }
 	};
 
 	const
@@ -44,19 +39,14 @@ export async function signupWithEmailAction( { email, password }: SignWithEmail 
 	};
 }
 
-export async function signupWithPhoneAction( { phone, password }: SignWithPhone ): Promise<ServerActionReturn<void, {}>>
+export async function signupWithPhoneAction( { phone, password, validationPassword }: SignupWithPhone ):
+	Promise<ServerActionReturn<void, { zodValidation?: ZodIssue[] }>>
 {
-	if ( !isMobilePhone( phone ) ) return {
-		success: false,
-		error  : { code: 'AUTH-SGUP-004', message: 'Invalid phone number' }
-	};
+	const schemaValidation = SignupWithPhoneSchema.safeParse( { phone, password, validationPassword } );
 
-	if ( !isValidPassword( password ) ) return {
+	if ( !schemaValidation.success ) return {
 		success: false,
-		error  : {
-			code   : 'AUTH-SGUP-005',
-			message: 'Must be at least 8 characters long and contain at least 1 number, 1 uppercase letter, 1 lowercase letter, and 1 symbol'
-		}
+		error  : { code: 'AUTH-SGUP-005', message: 'Invalid phone number or password', zodValidation: schemaValidation.error?.issues }
 	};
 
 	const
