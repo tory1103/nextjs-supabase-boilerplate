@@ -4,6 +4,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { ReactNode }     from 'react';
 
+import { ThemeProvider }          from '@/components/ui/theme-provider';
 import { Toaster }                from '@/components/ui/toaster';
 import { AuthContextProvider }    from '@/hooks/use-auth';
 import { createSupabaseSVClient } from '@/lib/supabase/server';
@@ -25,11 +26,18 @@ export default async function RootLayout
 		{ data: { user } } = await auth.getUser();
 
 	return (
-		<html lang={ 'en' }>
+		<html lang={ 'en' } suppressHydrationWarning>
 		<body>
 		<AuthContextProvider user={ user }>
-			<Toaster/>
-			{ children }
+			<ThemeProvider
+				attribute={ 'class' }
+				defaultTheme={ 'system' }
+				enableSystem
+				disableTransitionOnChange
+			>
+				<Toaster/>
+				{ children }
+			</ThemeProvider>
 		</AuthContextProvider>
 		</body>
 		</html>
