@@ -1,0 +1,99 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		},
+		"enabled": true
+	},
+	"css": {
+		"formatter": {
+			"enabled": true,
+			"indentStyle": "tab",
+			"lineEnding": "crlf",
+			"quoteStyle": "single"
+		}
+	},
+	"files": {
+		"ignoreUnknown": false
+	},
+	"formatter": {
+		"attributePosition": "auto",
+		"bracketSameLine": false,
+		"bracketSpacing": true,
+		"enabled": true,
+		"expand": "auto",
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"lineEnding": "crlf",
+		"lineWidth": 120
+	},
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "asNeeded",
+			"attributePosition": "auto",
+			"bracketSameLine": false,
+			"bracketSpacing": true,
+			"enabled": true,
+			"indentStyle": "tab",
+			"jsxQuoteStyle": "single",
+			"lineEnding": "crlf",
+			"quoteProperties": "asNeeded",
+			"quoteStyle": "single",
+			"semicolons": "always",
+			"trailingCommas": "all",
+			"lineWidth": 120
+		},
+		"parser": {
+			"jsxEverywhere": false
+		}
+	},
+	"json": {
+		"formatter": {
+			"bracketSpacing": true,
+			"enabled": true,
+			"expand": "auto",
+			"indentStyle": "tab",
+			"lineEnding": "crlf",
+			"trailingCommas": "none"
+		},
+		"parser": {
+			"allowComments": false,
+			"allowTrailingCommas": true
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+				"useBlockStatements": {
+					"level": "on",
+					"fix": "safe",
+					"options": {}
+				},
+				"useFragmentSyntax": {
+					"level": "on",
+					"fix": "safe",
+					"options": {}
+				},
+				"useForOf": "on",
+				"useConsistentArrayType": {
+					"level": "on",
+					"fix": "safe",
+					"options": {
+						"syntax": "shorthand"
+					}
+				}
+			}
+		}
+	},
+	"vcs": {
+		"clientKind": "git",
+		"defaultBranch": "main",
+		"enabled": true,
+		"useIgnoreFile": true
+	}
+}
